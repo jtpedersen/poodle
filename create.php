@@ -6,6 +6,7 @@
 <body>
 
 <?php 
+@include 'functions.php';
 
 if (isset($_POST['collector']) ) {
     // create the entries in the database
@@ -47,18 +48,9 @@ if (isset($_POST['collector']) ) {
 
 } else {
 //show the form
-
+    echo create_form();
 ?>
 
-
-<form name="input" action="create.php" method="post">
-      collector: <input type="text" name="collector" />
-        <br />
-      driver: <input type="text" name="driver" />
-        <br />
-
-        <input type="submit" value="Submit" />
-      </form>
 
 <?php
         } // end show form

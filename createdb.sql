@@ -37,7 +37,7 @@ create table pizza (
        order_id integer references pizza_order(id),
        
        username  varchar(150),	 
-       pizzaID  varchar(50),
+       pizza_id  varchar(50),
        comment  varchar(1024),	
        price numeric(5,2) default 60, 	--max prize 999.99
 
