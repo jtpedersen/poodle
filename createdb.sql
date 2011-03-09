@@ -53,7 +53,4 @@ create table pizza (
 CREATE TRIGGER update_updated BEFORE UPDATE
         ON pizza FOR EACH ROW EXECUTE PROCEDURE 
         update_updated();
-
-
-
 commit;
