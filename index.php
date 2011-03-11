@@ -2,7 +2,7 @@
 @include 'functions.php';
 
 if (!isset($_GET['id']) ) {
-    echo create_header("Please create a new poodle");
+    echo create_header("where do you want to eat today?");
     echo create_form();
     echo create_footer();
     return;
@@ -13,7 +13,8 @@ if (!isset($_GET['id']) ) {
 echo create_header("poodle fun");
 
 
-$conn = pg_connect("dbname=poodle user=poodle") or die("Could not connect");
+$conn = get_dbconnection();
+
 $id = clean_str($_GET['id']);
 $res = pg_prepare($conn, "query", "SELECT * FROM pizza_order WHERE user_uuid=$1 OR admin_uuid=$1");
 $res = pg_execute($conn, "query", array($id));
@@ -30,6 +31,7 @@ $driver = $row['driver'];
 $collector = $row['collector'];
 $is_admin = $row['admin_uuid'] == $id;
 $order_id = $row['id'];
+$pizza_place = $row['pizza_place'];
 
 
 
@@ -73,6 +75,7 @@ $res = pg_execute($conn, "pizzas", array($order_id));
 
 if ($is_admin) {
     echo "<h1>Administer order</h1>";
+    echo pizza_place($conn, $pizza_place);
     echo "<table>";
     echo "<tr>";
     cell_h("username");

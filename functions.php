@@ -9,19 +9,6 @@ function cell_h($s) {
     echo "<th>" . $s . "</th>\n";
  }
 
-function create_form() {
-    return '
-<form name="input" action="create.php" method="post">
-      collector: <input type="text" name="collector" />
-        <br />
-      driver: <input type="text" name="driver" />
-        <br />
-
-        <input type="submit" value="Submit" />
-      </form>
-';
-}
-
 function create_header($title) {
 return "
 <html>
@@ -42,6 +29,11 @@ function create_poodle() {
 
 function create_unicornpoodle() {
         return '<img src="http://www.myunusual.com/Pix/Pets%20Pix/PoodleCuts/unicorn.jpg" alt="no such poodle" />';
+}
+
+function get_dbconnection() {
+    $tmp = pg_connect("dbname=poodle user=poodle") or die("Could not connect");
+    return $tmp;
 }
 
 function pizza_adder($orderid) {
@@ -101,6 +93,53 @@ function check_error($res) {
     }
 }
 
+function create_form() {
+    $conn = get_dbconnection();
+    $res = pg_prepare($conn, "create", "SELECT name, id FROM pizza_place ORDER BY id"); 
+    check_error($res);
+    $res = pg_execute($conn, "create", array());
+
+$str = '<form name="input" action="create.php" method="post">
+pizza place: <select name="pizza_place">';
+
+    while ($row = pg_fetch_assoc($res)) {
+        $val = $row['id'];
+        $name = $row['name'];
+        $str .= "<option value=\"$val\">$name</option>";
+    }
+
+    $str .= "</select> <br />";
+
+    $str .= '
+      collector: <input type="text" name="collector" />
+        <br />
+      driver: <input type="text" name="driver" />
+        <br />
+        <input type="submit" value="Submit" />
+      </form>';
+
+    pg_close($conn);
+
+    return $str;
+}
+
+
+function pizza_place($conn, $id) {
+    $res = pg_prepare($conn, "place", "SELECT * FROM pizza_place WHERE id=$1");
+    check_error($res);
+    $res = pg_execute($conn, "place", array($id));
+    check_error($res);
+    $row = pg_fetch_assoc($res);
+    check_error($row);
+    $str = '<a href="' . $row['url'] . '" >' . $row['name'] . '</a><br />';
+    //TODO use a logo image some how
+    $str .= 'Call them at ' . $row['phone_1'];
+    $phone_2 = $row['phone_2'];
+    if ($phone_2 != NULL)
+        $str .= " or at $phone_2";
+    $str .= ' <br /> <a href="' . $row['catalog_url'] . '" > se menuen </a>'; 
+    return $str;
+}
 
 
 

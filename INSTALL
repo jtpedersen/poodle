@@ -1,0 +1,25 @@
+postrgress
+Trust local connections:
+Edit /etc/postgresql/8.4/main/pg_hba.conf to say:
+local   all         postgres                          trust
+local   all         all                               trust
+
+Enable auto vacuum: 
+Edit /etc/postgresql/8.4/main/postgresql.conf to say:
+track_counts = on
+autovacuum = on 
+
+
+Create the database:
+ createuser -s -d -U postgres -P poodle
+ createdb -U poodle poodle
+
+... Create new, empty database:
+ psql -U poodle < createdb.sql
+
+
+update the database to new version 
+
+dropdb poodle -Upoodle
+createdb -U poodle poodle
+psql -U poodle < createdb.sql
