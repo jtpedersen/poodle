@@ -24,11 +24,11 @@ function create_footer() {
 }
 
 function create_poodle() {
-    return '<img src="poodle.png" alt="no such poodle" />';
+    return '<img src="./images/poodle.png" alt="no such poodle" />';
 }
 
 function create_unicornpoodle() {
-        return '<img src="http://www.myunusual.com/Pix/Pets%20Pix/PoodleCuts/unicorn.jpg" alt="no such poodle" />';
+        return '<img src="./images/unicorn.jpg" alt="no such poodle" />';
 }
 
 function get_dbconnection() {
@@ -141,6 +141,30 @@ function pizza_place($conn, $id) {
     return $str;
 }
 
+function get_paid($conn, $order_id) {
+
+    $res = pg_prepare($conn, "paid", "SELECT SUM(price) FROM pizza WHERE order_id=$1 AND paid");
+    check_error($res);
+    $res = pg_execute($conn, "paid", array($order_id));
+    check_error($res);
+    $row = pg_fetch_row($res);
+    check_error($row);
+    return $row[0];
+
+}
+
+
+function get_total($conn, $order_id) {
+
+    $res = pg_prepare($conn, "total", "SELECT SUM(price) FROM pizza WHERE order_id=$1");
+    check_error($res);
+    $res = pg_execute($conn, "total", array($order_id));
+    check_error($res);
+    $row = pg_fetch_row($res);
+    check_error($row);
+    return $row[0];
+
+}
 
 
 

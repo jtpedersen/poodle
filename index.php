@@ -1,8 +1,15 @@
 <?php 
 @include 'functions.php';
+$todays_id = "4d7f8ff2ebeb1";
 
 if (!isset($_GET['id']) ) {
     echo create_header("where do you want to eat today?");
+
+
+    echo "<h1><a href=\"index.php?id=". $todays_id . "\" />todays poodle is " . $todays_id . "</a></h1>";
+
+    echo "create a new poodle?";
+
     echo create_form();
     echo create_footer();
     return;
@@ -10,7 +17,7 @@ if (!isset($_GET['id']) ) {
 
 
 
-echo create_header("poodle fun");
+
 
 
 $conn = get_dbconnection();
@@ -20,6 +27,9 @@ $res = pg_prepare($conn, "query", "SELECT * FROM pizza_order WHERE user_uuid=$1 
 $res = pg_execute($conn, "query", array($id));
 $row = pg_fetch_assoc($res);
 if( ! $row ) {
+    echo create_header("no such poodle");
+
+    echo "<h1><a href=\"index.php?id=". $todays_id . "\" />todays poodle is " . $todays_id . "</a></h1>";
     echo "no such poodle";
     echo create_poodle();
     echo create_unicornpoodle();
@@ -32,7 +42,8 @@ $collector = $row['collector'];
 $is_admin = $row['admin_uuid'] == $id;
 $order_id = $row['id'];
 $pizza_place = $row['pizza_place'];
-
+$pickup_time = $row['pickup_time'];
+$order_time = $row['order_time'];
 
 
 if (isset($_POST['ADD']) ) {
@@ -71,11 +82,18 @@ if (isset($_POST['ADD']) ) {
 
 
 $res = pg_prepare($conn, "pizzas", "SELECT * FROM pizza WHERE order_id=$1 ORDER BY id");
+check_error($res);
 $res = pg_execute($conn, "pizzas", array($order_id));
+check_error($res);
 
 if ($is_admin) {
+    echo create_header("poodle master");
     echo "<h1>Administer order</h1>";
     echo pizza_place($conn, $pizza_place);
+    echo "<hr />";
+    echo "pickup at: " .$pickup_time . "  ".  date("H:i:s", strtotime($pickup_time)) . "<br />";
+    echo "ordered at: " .$order_time . "  ".  date("H:i:s", strtotime($order_time))  . "<br />";
+    echo "<hr />";
     echo "<table>";
     echo "<tr>";
     cell_h("username");
@@ -88,11 +106,32 @@ if ($is_admin) {
     while ($row = pg_fetch_assoc($res)) {
         echo edit_pizza($row, $id);
     }    
+    cell("&nbsp;");
+    cell("&nbsp;");
+    cell("<b>total</b>");
+
+    
+    cell("<b>" .  get_total($conn, $order_id) . "</b>");
+
+    cell("(" . get_paid($conn, $order_id) . ")");
+    cell("&nbsp;");
+   
+
+    
 
     echo "</table>";
 } else {
+    echo create_header("let's poodle");
     echo "<h1>See order</h1>";
     echo "<table>\n";
+    echo "<tr>";
+    cell_h("username");
+    cell_h("pizza_id");
+    cell_h("comment");
+    cell_h("price");
+    cell_h( "paid?");
+
+    echo "</tr>";
     
     while ($row = pg_fetch_assoc($res)) {
         echo "<tr>\n";
@@ -100,7 +139,7 @@ if ($is_admin) {
         cell($row['pizza_id']);
         cell($row['comment']);
         cell($row['price']);
-        cell( $row['paid'] ? "paid" : "not paid");
+        cell( $row['paid']=='t' ? "paid" : "not paid");
         echo "</tr>\n";
     }
     echo "</table>\n";
