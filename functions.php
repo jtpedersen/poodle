@@ -47,7 +47,7 @@ function pizza_adder($orderid) {
 
         <tr>
         <td>pizza id:</td>
-        <td><input type="text" name="pizza_id"/> (fx 11a)</td>
+        <td><input type="text" name="pizza_id"/> (fx 12a)</td>
         </tr>
         <tr>
         <td>comment:</td>
@@ -99,8 +99,8 @@ function create_form() {
     check_error($res);
     $res = pg_execute($conn, "create", array());
 
-$str = '<form name="input" action="create.php" method="post">
-pizza place: <select name="pizza_place">';
+    $str = '<form name="input" action="create.php" method="post">
+            pizza place: <select name="pizza_place">';
 
     while ($row = pg_fetch_assoc($res)) {
         $val = $row['id'];
@@ -131,13 +131,13 @@ function pizza_place($conn, $id) {
     check_error($res);
     $row = pg_fetch_assoc($res);
     check_error($row);
-    $str = '<a href="' . $row['url'] . '" >' . $row['name'] . '</a><br />';
+    $str = '<a target="_blank" href="' . $row['url'] . '" >' . $row['name'] . '</a><br />';
     //TODO use a logo image some how
     $str .= 'Call them at ' . $row['phone_1'];
     $phone_2 = $row['phone_2'];
     if ($phone_2 != NULL)
         $str .= " or at $phone_2";
-    $str .= ' <br /> <a href="' . $row['catalog_url'] . '" > se menuen </a>'; 
+    $str .= ' <br /> <a target="_blank" href="' . $row['catalog_url'] . '" > se menuen </a>'; 
     return $str;
 }
 

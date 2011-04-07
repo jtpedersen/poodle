@@ -1,19 +1,20 @@
 <?php 
 @include 'functions.php';
-$todays_id = "4d7f8ff2ebeb1";
+ 
+$todays_id = "4d9de2624eb26";
 
-if (!isset($_GET['id']) ) {
-    echo create_header("where do you want to eat today?");
+/* if (!isset($_GET['id']) ) { */
+/*     echo create_header("where do you want to eat today?"); */
 
 
-    echo "<h1><a href=\"index.php?id=". $todays_id . "\" />todays poodle is " . $todays_id . "</a></h1>";
+/*     echo "<h1><a href=\"index.php?id=". $todays_id . "\" />todays poodle is " . $todays_id . "</a></h1>"; */
 
-    echo "create a new poodle?";
+/*     echo "create a new poodle?"; */
 
-    echo create_form();
-    echo create_footer();
-    return;
-}
+/*     echo create_form(); */
+/*     echo create_footer(); */
+/*     return; */
+/* } */
 
 
 
@@ -21,8 +22,12 @@ if (!isset($_GET['id']) ) {
 
 
 $conn = get_dbconnection();
+if (!isset($_GET['id'])) {
+  $id = $todays_id;
+} else {
+  $id = clean_str($_GET['id']);
+}
 
-$id = clean_str($_GET['id']);
 $res = pg_prepare($conn, "query", "SELECT * FROM pizza_order WHERE user_uuid=$1 OR admin_uuid=$1");
 $res = pg_execute($conn, "query", array($id));
 $row = pg_fetch_assoc($res);
@@ -122,6 +127,7 @@ if ($is_admin) {
     echo "</table>";
 } else {
     echo create_header("let's poodle");
+    echo pizza_place($conn, $pizza_place);
     echo "<h1>See order</h1>";
     echo "<table>\n";
     echo "<tr>";
