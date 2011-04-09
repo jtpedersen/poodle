@@ -10,6 +10,12 @@ if (isset($_GET['id'])) {
   $id = $request_id;
 }
 
+/* debug option. add ?debug to URL to show admin URL */
+if (isset($_GET['debug'])) {
+  echo "<h1>Todays admin URL is <a href='index.php?id=" . get_todays_poodle_admin_id() . "'>" . get_todays_poodle_admin_id() . "</a></h1>";
+  return;
+}
+
 $conn = get_dbconnection();
 $res = pg_prepare($conn, "query", "SELECT * FROM pizza_order WHERE user_uuid=$1 OR admin_uuid=$1");
 $res = pg_execute($conn, "query", array($id));
@@ -17,23 +23,23 @@ $row = pg_fetch_assoc($res);
 
 if( !$row ) {
   if ($id == $request_id) {
-    echo create_header("no such poodle");
-
-    echo "<h1><a href=\"index.php?id=". $todays_id . "\" />todays poodle is " . $todays_id . "</a></h1>";
-    echo "no such poodle";
-    echo create_poodle();
+    echo template_header("no such poodle");
+        
+    echo "<h2>No Such Poodle</h2>";
     echo create_unicornpoodle();
-    create_footer();
+    
+    echo "<p><a href=\"index.php?id=". $todays_id . "\" />todays poodle is " . $todays_id . "</a></p>";
+    template_footer();
     return;
     
   } else {
-    echo create_header("where do you want to eat today?");
+    echo template_header("where do you want to eat today?");
     echo "<h1><a href=\"index.php?id=". $todays_id . "\" />todays poodle is " . $todays_id . "</a></h1>";
 
     echo "create a new poodle?";
 
     echo create_form();
-    echo create_footer();
+    echo template_footer();
     return;
   }
 }
@@ -88,8 +94,8 @@ $res = pg_execute($conn, "pizzas", array($order_id));
 check_error($res);
 
 if ($is_admin) {
-  echo create_header("poodle master");
-  echo "<h1>Administer order</h1>";
+  echo template_header("poodle master");
+  echo "<h2>Administer Orders</h2>";
   echo pizza_place($conn, $pizza_place);
   echo "<hr />";
   echo "pickup at: " .$pickup_time . "  ".  date("H:i:s", strtotime($pickup_time)) . "<br />";
@@ -121,19 +127,24 @@ if ($is_admin) {
 
 
   echo "</table>";
+  echo template_footer("let's poodle");
 } else {
-  echo "Hello";
-  echo create_header("let's poodle");
+  echo template_header();
+  
+  echo "<h2>The Menu</h2>";
   echo pizza_place($conn, $pizza_place);
-  echo "<h1>See order</h1>";
-  echo "<table>\n";
+  
+  echo "<h2>Current Orders</h2>";
+  
+  echo "<p>The following orders have been placed:</p>";
+  
+  echo "<table class='ordertable'>\n";
   echo "<tr>";
   cell_h("username");
   cell_h("pizza_id");
   cell_h("comment");
   cell_h("price");
   cell_h( "paid?");
-
   echo "</tr>";
 
   while ($row = pg_fetch_assoc($res)) {
@@ -146,8 +157,11 @@ if ($is_admin) {
     echo "</tr>\n";
   }
   echo "</table>\n";
+  
+  echo "<h2>Place Your Order</h2>";
   echo pizza_adder($id);
-  echo create_footer();
+
+  echo template_footer("let's poodle");
 }
 
 

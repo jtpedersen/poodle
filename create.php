@@ -20,7 +20,7 @@ if (isset($_POST['collector']) ) {
 
     } while ($res==false && --$luck > 0);
     
-    echo create_header("100% poodle");
+    echo template_header("100% poodle");
 
     echo "<h2> tonight we dine at </h2>\n";
     echo pizza_place($conn, $pizza_place);
@@ -58,7 +58,7 @@ if (isset($_POST['collector']) ) {
 
 <?php
         } // end show form
-echo create_footer();
+echo template_footer();
 ?>
 
 

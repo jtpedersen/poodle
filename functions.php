@@ -20,18 +20,31 @@ function cell_h($s) {
     echo "<th>" . $s . "</th>\n";
  }
 
-function create_header($title) {
+function template_header() {
 return "
+<!DOCTYPE html>
 <html>
-<head>
-<title>$title</title>
-</head>
+  <head>
+    <title>Poodle</title>
+    <link rel='stylesheet' href='poodle.css'/>
+    <link href='fonts/bender-black.css' rel='stylesheet' type='text/css'>
+  </head>
 <body>
+<div id='wrapper'>
+  <div id='header'>
+    <img src='images/poodle-logo.png'><h1>Poodle</h1>
+  </div>
+    <div id='content'>
 ";
 }
 
-function create_footer() {
-    return "</body>\n<html>\n";
+function template_footer() {
+return "
+   </div>
+  </div>
+</body>
+</html>
+";
 }
 
 function create_poodle() {
@@ -52,20 +65,20 @@ function pizza_adder($orderid) {
         <form name="input" action="index.php?id=$orderid" method="post">
         <table>
         <tr>
-        <td>username:</td>
-        <td><input type="text" name="username"/> </td>
+        <td>Name:</td>
+        <td><input type="text" name="username"/></td><td> </td>
         </tr>
 
         <tr>
-        <td>pizza id:</td>
-        <td><input type="text" name="pizza_id"/> (fx 12a)</td>
+        <td>Pizza:</td>
+        <td><input type="text" name="pizza_id"/></td><td>fx 12a</td>
         </tr>
         <tr>
-        <td>comment:</td>
-        <td><input type="text" name="comment"/> (fx "please draw a unicorn on the box")</td>
+        <td>Comment:</td>
+        <td><input type="text" name="comment"/></td><td>fx "please draw a unicorn on the box"</td>
         </tr>
+        <tr><td></td><td class='submit'><input type="submit" name="ADD" value="Go Fetch!"/></td><td></td></tr>
         </table>
-        <input type="submit" name="ADD" value="Submit" />
         </form>
 
 EOT;
@@ -74,7 +87,7 @@ EOT;
 
 function clean_str($s) {
     //TODO escape ;less for \'
-    return htmlspecialchars(pg_escape_string($s));
+    return htmlspecialchars($s);
 }
 
 function edit_pizza($row, $poodle_id) {
@@ -142,13 +155,16 @@ function pizza_place($conn, $id) {
     check_error($res);
     $row = pg_fetch_assoc($res);
     check_error($row);
-    $str = '<a target="_blank" href="' . $row['url'] . '" >' . $row['name'] . '</a><br />';
+    
+    $str = "<p>We are ordering food from ";
+    $str .= '<a target="_blank" href="' . $row['url'] . '" >' . $row['name'] . '</a>. ';
+    $str .= 'See the <a target="_blank" href="' . $row['catalog_url'] . '" >menu</a></p>'; 
+    
     //TODO use a logo image some how
-    $str .= 'Call them at ' . $row['phone_1'];
+    $str .= '<p>Call them at ' . $row['phone_1'];
     $phone_2 = $row['phone_2'];
     if ($phone_2 != NULL)
-        $str .= " or at $phone_2";
-    $str .= ' <br /> <a target="_blank" href="' . $row['catalog_url'] . '" > se menuen </a>'; 
+        $str .= " or $phone_2</p>";
     return $str;
 }
 
