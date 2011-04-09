@@ -78,7 +78,7 @@ function clean_str($s) {
 }
 
 function edit_pizza($row, $poodle_id) {
-    $checked = $row[paid]=='t' ? "checked" : "";
+    $checked = $row['paid']=='t' ? "checked" : "";
     $str=<<<EOT
         <tr>
         <form name="input" action="index.php?id=$poodle_id" method="post">

@@ -62,7 +62,7 @@ if (isset($_POST['ADD']) ) {
   $pizza_id =clean_str($_POST['pizza_id']);
   $comment =clean_str($_POST['comment']);
   $price =clean_str($_POST['price']);
-  $paid = ($_POST['paid'] == "") ? "0" : "1";
+  $paid = (isset($_POST['paid'])) ? "1" : "0";
   //    echo "paid is $paid";
   $pid =clean_str($_POST['pid']);
 
