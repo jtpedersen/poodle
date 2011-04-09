@@ -14,8 +14,8 @@ if (isset($_POST['collector']) ) {
 
     $luck = 7;
     do {
-        $admin_id = uniqid();
-        $user_id = uniqid();
+        $admin_id = get_todays_poodle_admin_id();
+        $user_id = get_todays_poodle_user_id();
         $res = pg_execute($conn, "create", array($admin_id, $user_id, $driver, $collector, $pizza_place));
 
     } while ($res==false && --$luck > 0);
