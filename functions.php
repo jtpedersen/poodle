@@ -1,5 +1,16 @@
 <?php
 
+function get_todays_poodle_admin_id() {
+  $salt = "4d9de2624eb26";
+  $raw_id = $salt . date("m.d.y") . "admin";
+  return md5($raw_id);
+}
+
+function get_todays_poodle_user_id() {
+  $salt = "4d9de2624eb26";
+  $raw_id = $salt . date("m.d.y") . "user";
+  return md5($raw_id);
+}
 
 function cell($s) {
     echo "<td>" . $s . "</td>\n";
