@@ -1,5 +1,5 @@
 <?php
-@include 'functions.php';
+@require_once 'functions.php';
 
 $request_id = "";
 $todays_id = get_todays_poodle_user_id();  
@@ -122,11 +122,9 @@ if ($is_admin) {
 
   cell("(" . get_paid($conn, $order_id) . ")");
   cell("&nbsp;");
-   
-
-
 
   echo "</table>";
+    
   echo template_footer("let's poodle");
 } else {
   echo template_header();
