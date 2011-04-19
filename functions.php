@@ -28,10 +28,12 @@ return "
     <title>Poodle</title>
     <link rel='stylesheet' href='poodle.css'/>
     <link href='fonts/bender-black.css' rel='stylesheet' type='text/css'>
+    <link rel='shortcut icon' type='image/x-icon' href='favicon.ico'>
   </head>
 <body>
 <div id='wrapper'>
   <div id='header'>
+    <div id='countdown'>Pizzas will be ordered in<br /> 45 minutes</div>
     <img src='images/poodle-logo.png'><h1>Poodle</h1>
   </div>
     <div id='content'>

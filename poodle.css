@@ -34,6 +34,7 @@ img {
   
   -moz-box-shadow: 2px 2px 5px #aaa;
   box-shadow: 2px 2px 5px #aaa;
+  vertical-align: middle;
 }
 
 #header img {
@@ -49,6 +50,16 @@ img {
   height: 96px;
   font-family: 'BenderBlack';
   font-size: 60px;
+}
+
+#countdown {
+  margin:0; padding: 0;
+  float: right;
+  font-family: 'BenderBlack';
+  font-size: 20px;
+  position: relative;
+  top: 22px;
+  padding-right: 1em;
 }
 
 #content {

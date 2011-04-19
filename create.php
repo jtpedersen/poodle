@@ -1,5 +1,5 @@
 <?php 
-@include 'functions.php';
+@require_once 'functions.php';
 
 if (isset($_POST['collector']) ) {
     // create the entries in the database
