@@ -86,7 +86,6 @@ EOT;
 }
 
 function clean_str($s) {
-    //TODO escape ;less for \'
     return htmlspecialchars($s);
 }
 
@@ -192,6 +191,36 @@ function get_total($conn, $order_id) {
     return $row[0];
 
 }
+
+function get_timestamp($str) {
+  if( $str == "")
+    return NULL;
+  $tmp = date("Y m d ") . $str;
+  return $tmp;
+}
+
+
+function edit_order($row) {
+  $poodle_id = $row['admin_uuid'];
+  
+  $pickup_time = isset($row['pickup_time']) ? date("H:i", strtotime($row['pickup_time'])) : "";
+  $order_time = isset($row['order_time']) ? date("H:i", strtotime($row['order_time'])) : "";
+    $str=<<<EOT
+      <table>
+      <tr>
+      <form name="input" action="index.php?id=$poodle_id" method="post">
+      <td>Collector:<input type="text" name="collector" value="$row[collector]"/> </td>
+      <td>Driver:<input type="text" name="driver" value="$row[driver]"/> </td>
+      <td>pickup time<input type="text" name="pickup_time" value="$pickup_time"/> </td>
+      <td>order time<input type="text" name="order_time" value="$order_time"/> </td>
+      
+      <td> <input type="submit" name="EDIT_ORDER" value="edit" /> </td>
+      </form>
+      </tr>
+EOT;
+    return $str;
+}
+
 
 
 

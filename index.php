@@ -84,7 +84,21 @@ if (isset($_POST['ADD']) ) {
   check_error($res);
   $res = pg_execute($conn, "delete", array($pid));
   check_error($res);
+} else if (isset($_POST['EDIT_ORDER']) ) {
+
+  $collector=clean_str($_POST['collector']);
+  $driver=clean_str($_POST['driver']);
+
+  $pickup_time = get_timestamp(clean_str($_POST['pickup_time']));
+  $order_time = get_timestamp(clean_str($_POST['order_time']));
+
+  $res = pg_prepare($conn, "editOrder", "UPDATE pizza_order SET driver=$1, collector=$2, pickup_time=$3, order_time=$4  WHERE id=$5");
+  check_error($res);
+  $res = pg_execute($conn, "editOrder", array($driver, $collector, $pickup_time, $order_time, $order_id));
+  check_error($res);
+
 }
+
 
 
 
@@ -98,8 +112,7 @@ if ($is_admin) {
   echo "<h2>Administer Orders</h2>";
   echo pizza_place($conn, $pizza_place);
   echo "<hr />";
-  echo "pickup at: " .$pickup_time . "  ".  date("H:i:s", strtotime($pickup_time)) . "<br />";
-  echo "ordered at: " .$order_time . "  ".  date("H:i:s", strtotime($order_time))  . "<br />";
+  echo edit_order($row);
   echo "<hr />";
   echo "<table>";
   echo "<tr>";
@@ -133,7 +146,9 @@ if ($is_admin) {
   
   echo "<h2>The Menu</h2>";
   echo pizza_place($conn, $pizza_place);
-  
+  echo "order at: " .  date("H:i:s", strtotime($order_time))  . "<br />";
+  echo "pickup at: " .  date("H:i:s", strtotime($pickup_time)) . "<br />";
+  echo $driver . " is driving and " . $collector . " is collecting ze monies";  
   echo "<h2>Current Orders</h2>";
   
   echo "<p>The following orders have been placed:</p>";
