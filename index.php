@@ -116,6 +116,7 @@ if ($is_admin) {
   echo "<hr />";
   echo "<table>";
   echo "<tr>";
+  cell_h("&nbsp;");
   cell_h("username");
   cell_h("pizza_id");
   cell_h("comment");
@@ -123,12 +124,14 @@ if ($is_admin) {
   cell_h( "paid?");
 
   echo "</tr>";
+  $i = 0;
   while ($row = pg_fetch_assoc($res)) {
-    echo edit_pizza($row, $id);
+    echo edit_pizza($row, $id, ++$i);
   }
   cell("&nbsp;");
   cell("&nbsp;");
   cell("<b>total</b>");
+  cell("$i pizzaer til ");
 
 
   cell("<b>" .  get_total($conn, $order_id) . "</b>");

@@ -22,19 +22,24 @@ function cell_h($s) {
 
 function template_header() {
 return "
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
   <head>
+
     <title>Poodle</title>
     <link rel='stylesheet' href='poodle.css'/>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
     <link href='fonts/bender-black.css' rel='stylesheet' type='text/css'>
     <link rel='shortcut icon' type='image/x-icon' href='favicon.ico'>
+<script  type='text/javascript' src='./js/hello.js' >
+</script>
   </head>
 <body>
 <div id='wrapper'>
   <div id='header'>
     <div id='countdown'>Pizzas will be ordered in<br /> 45 minutes</div>
     <img src='images/poodle-logo.png'><h1>Poodle</h1>
+
   </div>
     <div id='content'>
 ";
@@ -91,12 +96,13 @@ function clean_str($s) {
     return htmlspecialchars($s);
 }
 
-function edit_pizza($row, $poodle_id) {
+function edit_pizza($row, $poodle_id, $i) {
     $checked = $row['paid']=='t' ? "checked" : "";
     $str=<<<EOT
         <tr>
         <form name="input" action="index.php?id=$poodle_id" method="post">
         <input type="hidden" name="pid" value="$row[id]" />
+        <td>$i</td>
         <td><input type="text" name="username" value="$row[username]"/> </td>
         <td><input type="text" name="pizza_id" value="$row[pizza_id]"/> </td>
         <td><input type="text" name="comment" value="$row[comment]"/> </td>
