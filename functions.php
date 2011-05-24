@@ -21,7 +21,7 @@ function cell_h($s) {
  }
 
 function template_header() {
-return "
+  return "
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
   <head>
@@ -31,8 +31,8 @@ return "
 <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
     <link href='fonts/bender-black.css' rel='stylesheet' type='text/css'>
     <link rel='shortcut icon' type='image/x-icon' href='favicon.ico'>
-<script  type='text/javascript' src='./js/hello.js' >
-</script>
+<script  type='text/javascript' src='./js/jq.js' ></script>
+<script  type='text/javascript' src='./js/hello.js' ></script>
   </head>
 <body>
 <div id='wrapper'>
