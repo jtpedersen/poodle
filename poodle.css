@@ -52,11 +52,33 @@ img {
   font-size: 60px;
 }
 
-#countdown {
+#top { 
+       width: 450px;
   margin:0; padding: 0;
   float: right;
   font-family: 'BenderBlack';
   font-size: 20px;
+
+ }
+
+#msg { 
+       float:left;
+       width:200px;
+       border:none; /* thin solid black; */
+       margin: 0px;
+ }
+
+#countdown {
+
+
+  background: transparent;
+             border: none;
+
+             margin: 0 0 0 0;
+             padding: 0;
+             width:180px;
+
+  float: right;
   position: relative;
   top: 22px;
   padding-right: 1em;

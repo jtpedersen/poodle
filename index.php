@@ -108,7 +108,7 @@ $res = pg_execute($conn, "pizzas", array($order_id));
 check_error($res);
 
 if ($is_admin) {
-  echo template_header("poodle master");
+  echo template_header($id);
   echo "<h2>Administer Orders</h2>";
   echo pizza_place($conn, $pizza_place);
   echo "<hr />";
@@ -143,7 +143,7 @@ if ($is_admin) {
     
   echo template_footer("let's poodle");
 } else {
-  echo template_header();
+  echo template_header($id);
   
   echo "<h2>The Menu</h2>";
   echo pizza_place($conn, $pizza_place);
