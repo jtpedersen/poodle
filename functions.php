@@ -35,10 +35,13 @@ function template_header($pid) {
 <script  type='text/javascript' src='./js/jq.js' ></script>
 <style type='text/css'>@import 'js/jquery.countdown.css';</style> 
 <script type='text/javascript' src='js/jquery.countdown.js'></script>
+<script  type='text/javascript' src='./js/particles.js' ></script>
 <script  type='text/javascript' src='./js/hello.js' ></script>
   </head>
 <body>
+<canvas id='canvas' > <h1>no canvas for you</h1> </canvas>
 <div id='wrapper'>
+
   <div id='header'>
 <div id='top'>
 <div id='msg'> </div>
@@ -47,14 +50,18 @@ function template_header($pid) {
     <img src='images/poodle-logo.png'><h1>Poodle</h1>
 
   </div>
+
+<h1><a href='game/'> TRY THE GAME </a></h1>
     <div id='content'>
 ";
 }
 
 function template_footer() {
 return "
+
    </div>
   </div>
+
 </body>
 </html>
 ";
@@ -86,6 +93,12 @@ function pizza_adder($orderid) {
         <td>Pizza:</td>
         <td><input type="text" name="pizza_id"/></td><td>fx 12a</td>
         </tr>
+
+        <tr>
+        <td>Price:</td>
+        <td><input type="text" name="price" value="60" /> </td><td></td>
+        </tr>
+
         <tr>
         <td>Comment:</td>
         <td><input type="text" name="comment"/></td><td>fx "please draw a unicorn on the box"</td>
@@ -176,8 +189,9 @@ function pizza_place($conn, $id) {
     //TODO use a logo image some how
     $str .= '<p>Call them at ' . $row['phone_1'];
     $phone_2 = $row['phone_2'];
-    if ($phone_2 != NULL)
-        $str .= " or $phone_2</p>";
+    if ($phone_2 != NULL && $phone_2 != 0)
+        $str .= " or $phone_2";
+    $str .= "</p>";
     return $str;
 }
 
@@ -234,8 +248,5 @@ function edit_order($row) {
 EOT;
     return $str;
 }
-
-
-
 
 ?>

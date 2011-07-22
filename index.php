@@ -57,10 +57,11 @@ if (isset($_POST['ADD']) ) {
   $username =clean_str($_POST['username']);
   $pizza_id =clean_str($_POST['pizza_id']);
   $comment =clean_str($_POST['comment']);
+  $price =clean_str($_POST['price']);
 
-  $res = pg_prepare($conn, "add", "INSERT INTO pizza(order_id, username, pizza_id, comment) values ($1, $2, $3, $4)");
+  $res = pg_prepare($conn, "add", "INSERT INTO pizza(order_id, username, pizza_id, comment, price) values ($1, $2, $3, $4, $5)");
   check_error($res);
-  $res = pg_execute($conn, "add", array($order_id, $username, $pizza_id, $comment));
+  $res = pg_execute($conn, "add", array($order_id, $username, $pizza_id, $comment, $price));
   check_error($res);
 
 } else if (isset($_POST['EDIT']) ) {
@@ -102,7 +103,7 @@ if (isset($_POST['ADD']) ) {
 
 
 
-$res = pg_prepare($conn, "pizzas", "SELECT * FROM pizza WHERE order_id=$1 ORDER BY id");
+$res = pg_prepare($conn, "pizzas", "SELECT * FROM pizza WHERE order_id=$1 ORDER BY pizza_id");
 check_error($res);
 $res = pg_execute($conn, "pizzas", array($order_id));
 check_error($res);

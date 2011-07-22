@@ -50,5 +50,5 @@ $(document).ready(function() {
 	      { id: pid},
 	      display_ticker
 	     );
-    
+    initparticles();
 });
