@@ -97,11 +97,7 @@ if (isset($_POST['ADD']) ) {
   check_error($res);
   $res = pg_execute($conn, "editOrder", array($driver, $collector, $pickup_time, $order_time, $order_id));
   check_error($res);
-
 }
-
-
-
 
 $res = pg_prepare($conn, "pizzas", "SELECT * FROM pizza WHERE order_id=$1 ORDER BY pizza_id");
 check_error($res);
@@ -152,7 +148,7 @@ if ($is_admin) {
   echo "pickup at: " .  date("H:i:s", strtotime($pickup_time)) . "<br />";
   echo $driver . " is driving and " . $collector . " is collecting ze monies";  
   echo "<h2>Current Orders</h2>";
-  
+  echo '<p style="color:red" >BEWARE the person with the longest comment line, or annoyingly complex comment line automatically accepts responsibility for calling the pizzaplace </p>';
   echo "<p>The following orders have been placed:</p>";
   
   echo "<table class='ordertable'>\n";

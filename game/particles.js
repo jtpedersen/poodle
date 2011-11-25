@@ -1,5 +1,5 @@
 // target frames per second
-const FPS = 30;
+const FPS = 10;
 var canvas = null;
 var context2D = null;
 var frame = 0;
