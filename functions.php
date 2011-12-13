@@ -52,8 +52,6 @@ function template_header($pid) {
     <img src='images/poodle-logo.png'><h1>Poodle</h1>
 
   </div>
-
-<h1><a href='game/'> TRY THE GAME </a></h1>
     <div id='content'>
 ";
 }
