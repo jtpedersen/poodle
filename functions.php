@@ -20,6 +20,9 @@ function cell_h($s) {
     echo "<th>" . $s . "</th>\n";
  }
 
+
+//<script  type='text/javascript' src='./js/particles.js' ></script>
+
 function template_header($pid) {
   return "
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
@@ -35,7 +38,6 @@ function template_header($pid) {
 <script  type='text/javascript' src='./js/jq.js' ></script>
 <style type='text/css'>@import 'js/jquery.countdown.css';</style> 
 <script type='text/javascript' src='js/jquery.countdown.js'></script>
-<script  type='text/javascript' src='./js/particles.js' ></script>
 <script  type='text/javascript' src='./js/hello.js' ></script>
   </head>
 <body>
