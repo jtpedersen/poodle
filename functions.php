@@ -154,6 +154,8 @@ function create_form() {
     $str .= "</select> <br />";
 
     $str .= '
+      Order title: <input type="text" name="order_title" />
+        <br />
       collector: <input type="text" name="collector" />
         <br />
       driver: <input type="text" name="driver" />
@@ -179,6 +181,8 @@ function pizza_place($conn, $id) {
     $str .= '<a target="_blank" href="' . $row['url'] . '" >' . $row['name'] . '</a>. ';
     $str .= 'See the <a target="_blank" href="' . $row['catalog_url'] . '" >menu</a></p>'; 
     
+    
+
     //TODO use a logo image some how
     $str .= '<p>Call them at ' . $row['phone_1'];
     $phone_2 = $row['phone_2'];
@@ -242,32 +246,40 @@ EOT;
     return $str;
 }
 
-function show_poodle_list($heading, $res) {
+
+function show_poodle_list($heading, $res, $conn) {
    echo "<h2>$heading</h2>";
-    echo "<table class='ordertable'>";
-    echo "<tr>";
+   echo "<table class='ordertable'>";
+   echo "<tr>";
+    cell_h("&nbsp;");
     cell_h("Driver");
     cell_h("Collector");
     cell_h("Place");
-    cell_h("Order time");
-    cell_h("pickup time");
-    cell_h("login");
+    cell_h("Created");
+    cell_h("Access");
     echo "</tr>";
 
     while ($row = pg_fetch_assoc($res)) {
         echo "<tr>";
+        $order_title = $row['order_title'];
         $driver = $row['driver'];
         $collector = $row['collector'];
         $uuid = $row['user_uuid'];
-        $pizza_place = $row['pizza_place'];
-        $pickup_time = $row['pickup_time'];
-        $order_time = $row['order_time'];
         
+
+        $name_res = pg_query_params($conn, "SELECT name FROM pizza_place WHERE id=$1", array($row['pizza_place']));
+        check_error($name_res);
+        $name_row = pg_fetch_row($name_res);
+        check_error($name_row);
+        $pizza_place = $name_row ? $name_row[0] : "unknown pizzapplace";
+
+        $created = $row['created'];
+
+        cell($order_title);
         cell($driver);
         cell($collector);
         cell($pizza_place);
-        cell($order_time);
-        cell($pickup_time);
+        cell($created);
         cell("<a href=\"index.php?id=$uuid\" >open poodle </a>");
         echo "</tr>";
     }
@@ -280,18 +292,19 @@ function show_poodles() {
     $conn = get_dbconnection();
     $res = pg_prepare($conn, "live", "SELECT * FROM pizza_order WHERE pickup_time IS NULL
                                        AND date_part('epoch', age(order_time)) < 36*24*60
-                                       ORDER BY order_time ASC");
+                                       ORDER BY created ASC");
     check_error($res);
     $res = pg_execute($conn, "live", array());
-    show_poodle_list("Active poodles", $res);
+    show_poodle_list("Active poodles", $res, $conn);
 
 //dead poodles
     $res = pg_prepare($conn, "dead", "SELECT * FROM pizza_order
-                                       ORDER BY pickup_time ASC
-                                       LIMIT 10");
+                                      WHERE  NOT pickup_time IS NULL
+                                       ORDER BY created DESC
+                                       LIMIT 5");
     check_error($res);
     $res = pg_execute($conn, "dead", array());
-    show_poodle_list("Recently deceased poodles", $res);
+    show_poodle_list("Recently deceased poodles", $res, $conn);
 
 
     pg_close($conn);

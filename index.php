@@ -42,6 +42,7 @@ $order_id = $row['id'];
 $pizza_place = $row['pizza_place'];
 $pickup_time = $row['pickup_time'];
 $order_time = $row['order_time'];
+$order_title = $row['order_title'];
 
 
 if (isset($_POST['ADD']) ) {
@@ -96,8 +97,8 @@ $res = pg_execute($conn, "pizzas", array($order_id));
 check_error($res);
 
 if ($is_admin) {
-  echo template_header($id);
-  echo "<h2>Administer Orders</h2>";
+  echo template_header($order_title);
+  echo "<h2>Administer Orders for $order_title</h2>";
   echo pizza_place($conn, $pizza_place);
   echo "<hr />";
   echo edit_order($row);
@@ -131,9 +132,9 @@ if ($is_admin) {
     
   echo template_footer("let's poodle");
 } else {
-  echo template_header($id);
+  echo template_header($order_title);
   
-  echo "<h2>The Menu</h2>";
+  echo "<h2>$order_title</h2>";
   echo pizza_place($conn, $pizza_place);
   echo "order at: " .  date("H:i:s", strtotime($order_time))  . "<br />";
   echo "pickup at: " .  date("H:i:s", strtotime($pickup_time)) . "<br />";

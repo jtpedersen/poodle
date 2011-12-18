@@ -6,18 +6,19 @@ if (isset($_POST['collector']) ) {
     $conn = get_dbconnection();
 
     
-    $res = pg_prepare($conn, "create", "INSERT INTO pizza_order (admin_uuid, user_uuid, driver, collector, pizza_place, order_time) VALUES ($1, $2, $3, $4, $5, $6)"); 
+    $res = pg_prepare($conn, "create", "INSERT INTO pizza_order (admin_uuid, user_uuid, driver, collector, pizza_place, order_time, order_title) VALUES ($1, $2, $3, $4, $5, $6, $7)"); 
     
     $collector = clean_str($_POST['collector']);
     $driver = clean_str($_POST['driver']);
     $pizza_place = clean_str($_POST['pizza_place']);
-    $order_time = get_timestamp("18:30");
+    $order_time = get_timestamp("17:30");
+    $order_title = clean_str($_POST['order_title']);
 
     $luck = 7;
     do {
         $admin_id = get_poodle_uuid();
         $user_id = get_poodle_uuid();
-        $res = pg_execute($conn, "create", array($admin_id, $user_id, $driver, $collector, $pizza_place, $order_time));
+        $res = pg_execute($conn, "create", array($admin_id, $user_id, $driver, $collector, $pizza_place, $order_time, $order_title));
 
     } while ($res==false && --$luck > 0);
     
