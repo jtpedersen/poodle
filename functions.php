@@ -244,7 +244,7 @@ EOT;
 
 function show_poodle_list($heading, $res) {
    echo "<h2>$heading</h2>";
-    echo "<table>";
+    echo "<table class='ordertable'>";
     echo "<tr>";
     cell_h("Driver");
     cell_h("Collector");

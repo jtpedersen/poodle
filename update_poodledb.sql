@@ -1,0 +1,4 @@
+BEGIN TRANSACTION;
+ALTER TABLE pizza_order ADD COLUMN order_title text DEFAULT 'hack mad';
+
+END TRANSACTION;

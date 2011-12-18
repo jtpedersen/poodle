@@ -34,6 +34,7 @@ create table pizza_order (
        id serial primary key,	
        created timestamp default now(),
        updated timestamp default now(),
+       pizza_order text default 'hack mad',
 
        pizza_place integer references pizza_place(id),
        admin_uuid varchar(42) unique ,
