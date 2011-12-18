@@ -6,8 +6,13 @@ $todays_id = get_todays_poodle_user_id();
 $id = $todays_id;
 
 if (isset($_GET['id'])) {
-  $request_id = clean_str($_GET['id']);
-  $id = $request_id;
+    $request_id = clean_str($_GET['id']);
+    $id = $request_id;
+} else {
+    echo template_header("Welcome to the wonderfull world of poodling");
+    echo show_poodles();
+    echo template_footer();    
+    return;
 }
 
 /* debug option. add ?debug to URL to show admin URL */

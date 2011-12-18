@@ -249,4 +249,60 @@ EOT;
     return $str;
 }
 
+function show_poodle_list($heading, $res) {
+   echo "<h2>$heading</h2>";
+    echo "<table>";
+    echo "<tr>";
+    cell_h("Driver");
+    cell_h("Collector");
+    cell_h("Place");
+    cell_h("Order time");
+    cell_h("pickup time");
+    cell_h("login");
+    echo "</tr>";
+
+    while ($row = pg_fetch_assoc($res)) {
+        echo "<tr>";
+        $driver = $row['driver'];
+        $collector = $row['collector'];
+        $uuid = $row['user_uuid'];
+        $pizza_place = $row['pizza_place'];
+        $pickup_time = $row['pickup_time'];
+        $order_time = $row['order_time'];
+        
+        cell($driver);
+        cell($collector);
+        cell($pizza_place);
+        cell($order_time);
+        cell($pickup_time);
+        cell("<a href=\"index.php?id=$uuid\" >open poodle </a>");
+        echo "</tr>";
+    }
+    echo "</table>";
+
+
+}
+
+function show_poodles() {
+    $conn = get_dbconnection();
+    $res = pg_prepare($conn, "live", "SELECT * FROM pizza_order WHERE pickup_time IS NULL
+                                       AND date_part('epoch', age(order_time)) < 36*24*60
+                                       ORDER BY order_time DESC");
+    check_error($res);
+    $res = pg_execute($conn, "live", array());
+    show_poodle_list("Active poodles", $res);
+
+//dead poodles
+    $res = pg_prepare($conn, "dead", "SELECT * FROM pizza_order
+                                       ORDER BY pickup_time ASC
+                                       LIMIT 10");
+    check_error($res);
+    $res = pg_execute($conn, "dead", array());
+    show_poodle_list("Recently deceased poodles", $res);
+
+
+    pg_close($conn);
+
+}
+
 ?>
