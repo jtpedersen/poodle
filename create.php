@@ -22,7 +22,7 @@ if (isset($_POST['collector']) ) {
 
     } while ($res==false && --$luck > 0);
     
-    echo template_header("100% poodle");
+    echo template_header("100% poodle", $admin_id);
 
     echo "<h2> tonight we dine at </h2>\n";
     echo pizza_place($conn, $pizza_place);

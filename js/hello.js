@@ -2,13 +2,14 @@ function isoDateReviver(value) {
     // 2011-05-24 17:51:40.414011
 
  if (typeof value === 'string') {
-//     return Date.parse(value);
     var a = /^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)(?:([\+-])(\d{2})\:(\d{2}))?Z?$/.exec(value);
       if (a) {
         var utcMilliseconds = Date.UTC(+a[1], a[2]-1 , +a[3], +a[4]-2, +a[5], +a[6]);
-        return new Date(utcMilliseconds);
+	  var d = new Date(utcMilliseconds);
+	  //vintertids hack
+	  d.setHours(d.getHours()+1);
+          return d;
       }
-
   }
   return value;
 }
@@ -24,10 +25,11 @@ function timeToGet() {
 
 
 function display_ticker(json) {
+
     var top_msg = document.getElementById('msg');
     if (json.pickup_time == null) {
 	var order = isoDateReviver(json.order_time);
-//	alert (order);
+//	alert ("order: " + order);
 	top_msg.innerHTML =  "<h2>Order in</h2>";
 	$('#countdown').countdown({until: order,
 				   compact: true,
@@ -48,10 +50,8 @@ function display_ticker(json) {
 }
 
 $(document).ready(function() {
-    
     $.getJSON("ajax.php",
 	      { id: pid},
 	      display_ticker
 	     );
-    initparticles();
 });

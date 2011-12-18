@@ -7,7 +7,7 @@ if (isset($_GET['id'])) {
     $request_id = clean_str($_GET['id']);
     $id = $request_id;
 } else {
-    echo template_header("Welcome to the wonderfull world of poodling");
+    echo template_header("Welcome to the wonderfull world of poodling", "foo");
     echo show_poodles();
     echo "<h2> create a new poodle?</h2>";
 
@@ -25,7 +25,7 @@ $res = pg_execute($conn, "query", array($id));
 $row = pg_fetch_assoc($res);
 
 if( !$row ) {
-    echo template_header("no such poodle");
+    echo template_header("no such poodle", "osd");
         
     echo "<h2>No Such Poodle</h2>";
     echo create_unicornpoodle();
@@ -97,7 +97,7 @@ $res = pg_execute($conn, "pizzas", array($order_id));
 check_error($res);
 
 if ($is_admin) {
-  echo template_header($order_title);
+    echo template_header($order_title, $id);
   echo "<h2>Administer Orders for $order_title</h2>";
   echo pizza_place($conn, $pizza_place);
   echo "<hr />";
@@ -134,7 +134,7 @@ if ($is_admin) {
 } else {
     
     $closed = isset($pickup_time);
-    echo template_header($order_title);
+    echo template_header($order_title, $id);
   
   echo "<h2>$order_title</h2>";
   if ($closed) {
