@@ -1,5 +1,7 @@
 <?php
 
+setlocale(LC_TIME, "da_DK.utf8");
+
 function get_poodle_uuid() {
   $salt = "4d9de2624eb26";
   $raw_id = $salt . uniqid();
@@ -279,8 +281,8 @@ function show_poodle_list($heading, $res, $conn) {
         cell($driver);
         cell($collector);
         cell($pizza_place);
-        cell($created);
-        cell("<a href=\"index.php?id=$uuid\" >open poodle </a>");
+        cell(strftime("%A  %R", strtotime($created)));
+        cell("<a href=\"index.php?id=$uuid\" >Show poodle </a>");
         echo "</tr>";
     }
     echo "</table>";

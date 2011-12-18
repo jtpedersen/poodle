@@ -132,12 +132,19 @@ if ($is_admin) {
     
   echo template_footer("let's poodle");
 } else {
-  echo template_header($order_title);
+    
+    $closed = isset($pickup_time);
+    echo template_header($order_title);
   
   echo "<h2>$order_title</h2>";
+  if ($closed) {
+      echo "<h1>Closed for orders </h1>";
+      echo "Pick up order: " . strftime("%R (%e. %B %Y)", strtotime($pickup_time));
+  }
   echo pizza_place($conn, $pizza_place);
   echo "order at: " .  date("H:i:s", strtotime($order_time))  . "<br />";
-  echo "pickup at: " .  date("H:i:s", strtotime($pickup_time)) . "<br />";
+  
+
   echo $driver . " is driving and " . $collector . " is collecting ze monies";  
   echo "<h2>Current Orders</h2>";
   echo '<p style="color:red" >BEWARE the person with the longest comment line, or annoyingly complex comment line automatically accepts responsibility for calling the pizzaplace </p>';
@@ -162,16 +169,12 @@ if ($is_admin) {
     echo "</tr>\n";
   }
   echo "</table>\n";
-  
-  echo "<h2>Place Your Order</h2>";
-  echo pizza_adder($id);
-
-  echo template_footer("let's poodle");
+  if (!$closed) {  
+      echo "<h2>Place Your Order</h2>";
+      echo pizza_adder($id);
+  }
+  echo template_footer();
 }
 
-
-?>
-
-<?php
 pg_close($conn);
 ?>
