@@ -15,8 +15,8 @@ if (isset($_POST['collector']) ) {
 
     $luck = 7;
     do {
-        $admin_id = get_todays_poodle_admin_id();
-        $user_id = get_todays_poodle_user_id();
+        $admin_id = get_poodle_uuid();
+        $user_id = get_poodle_uuid();
         $res = pg_execute($conn, "create", array($admin_id, $user_id, $driver, $collector, $pizza_place, $order_time));
 
     } while ($res==false && --$luck > 0);
@@ -28,9 +28,6 @@ if (isset($_POST['collector']) ) {
     
     pg_close($conn);
     //show the funny urls
-
-
-
     ?>
              <hr />
              <ul>

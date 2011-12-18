@@ -1,15 +1,9 @@
 <?php
 
-function get_todays_poodle_admin_id() {
+function get_poodle_uuid() {
   $salt = "4d9de2624eb26";
-  $raw_id = $salt . date("m.d.y") . "admin";
-  return md5($raw_id);
-}
-
-function get_todays_poodle_user_id() {
-  $salt = "4d9de2624eb26";
-  $raw_id = $salt . date("m.d.y") . "user";
-  return md5($raw_id);
+  $raw_id = $salt . uniqid();
+  return sha1($raw_id);
 }
 
 function cell($s) {
@@ -21,7 +15,6 @@ function cell_h($s) {
  }
 
 
-//<script  type='text/javascript' src='./js/particles.js' ></script>
 
 function template_header($pid) {
   return "
@@ -287,7 +280,7 @@ function show_poodles() {
     $conn = get_dbconnection();
     $res = pg_prepare($conn, "live", "SELECT * FROM pizza_order WHERE pickup_time IS NULL
                                        AND date_part('epoch', age(order_time)) < 36*24*60
-                                       ORDER BY order_time DESC");
+                                       ORDER BY order_time ASC");
     check_error($res);
     $res = pg_execute($conn, "live", array());
     show_poodle_list("Active poodles", $res);

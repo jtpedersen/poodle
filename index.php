@@ -2,8 +2,6 @@
 @require_once 'functions.php';
 
 $request_id = "";
-$todays_id = get_todays_poodle_user_id();  
-$id = $todays_id;
 
 if (isset($_GET['id'])) {
     $request_id = clean_str($_GET['id']);
@@ -11,14 +9,14 @@ if (isset($_GET['id'])) {
 } else {
     echo template_header("Welcome to the wonderfull world of poodling");
     echo show_poodles();
-    echo template_footer();    
-    return;
-}
+    echo "<h2> create a new poodle?</h2>";
 
-/* debug option. add ?debug to URL to show admin URL */
-if (isset($_GET['debug'])) {
-  echo "<h1>Todays admin URL is <a href='index.php?id=" . get_todays_poodle_admin_id() . "'>" . get_todays_poodle_admin_id() . "</a></h1>";
-  return;
+    echo create_form();
+
+
+    echo template_footer();    
+
+    return;
 }
 
 $conn = get_dbconnection();
@@ -27,7 +25,6 @@ $res = pg_execute($conn, "query", array($id));
 $row = pg_fetch_assoc($res);
 
 if( !$row ) {
-  if ($id == $request_id) {
     echo template_header("no such poodle");
         
     echo "<h2>No Such Poodle</h2>";
@@ -36,17 +33,6 @@ if( !$row ) {
     echo "<p><a href=\"index.php?id=". $todays_id . "\" />todays poodle is " . $todays_id . "</a></p>";
     template_footer();
     return;
-    
-  } else {
-    echo template_header("where do you want to eat today?");
-    echo "<h1><a href=\"index.php?id=". $todays_id . "\" />todays poodle is " . $todays_id . "</a></h1>";
-
-    echo "create a new poodle?";
-
-    echo create_form();
-    echo template_footer();
-    return;
-  }
 }
 
 $driver = $row['driver'];
