@@ -281,7 +281,7 @@ function show_poodle_list($heading, $res, $conn) {
         cell($driver);
         cell($collector);
         cell($pizza_place);
-        cell(strftime("%A  %R", strtotime($created)));
+        cell(strftime("%A den %e. %B kl %R", strtotime($created)));
         cell("<a href=\"index.php?id=$uuid\" >Show poodle </a>");
         echo "</tr>";
     }

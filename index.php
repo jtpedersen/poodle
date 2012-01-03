@@ -7,12 +7,11 @@ if (isset($_GET['id'])) {
     $request_id = clean_str($_GET['id']);
     $id = $request_id;
 } else {
-    echo template_header("Welcome to the wonderfull world of poodling", "foo");
+    echo template_header("Welcome to the wonderful world of poodling", "foo");
     echo show_poodles();
     echo "<h2> create a new poodle?</h2>";
 
     echo create_form();
-
 
     echo template_footer();    
 
